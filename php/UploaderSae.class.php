@@ -215,22 +215,17 @@ class UploaderSae {
             return;
         }
 
-        //创建目录失败
-        if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
-            $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR");
-            return;
-        } else if (!is_writeable($dirname)) {
-            $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
-            return;
-        }
-
         //移动文件
-        if (!(file_put_contents($this->filePath, $img) && file_exists($this->filePath))) { //移动失败
-            $this->stateInfo = $this->getStateInfo("ERROR_WRITE_CONTENT");
-        } else { //移动成功
+        $domain = 'ueditor';
+        $destFileName = $this->fullName;
+        $attr = array('encoding' => 'gzip','type'=>'image/png');
+        $url = $this->_storage->write($domain,$destFileName, $img, -1, $attr, true);
+        if($url){
+            $this->url = $url;
             $this->stateInfo = $this->stateMap[0];
+        }else{
+            $this->stateInfo = $this->getStateInfo("ERROR_FILE_MOVE");
         }
-
     }
 
     /**
