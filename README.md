@@ -10,7 +10,10 @@
 **注意**
 config_sae.json配置的ListPath不能以反斜杠`/` 结尾
 
-项目github地址：[ueditor_sae][2]
+项目coding地址：[ueditor_sae][2]
+项目github地址：[ueditor_sae][3]
+
 
   [1]: http://fex-team.github.io/ueditor/
   [2]: https://coding.net/u/lightjoe/p/ueditor_sae/git
+  [3]: https://github.com/LightJoe/ueditor_sae
