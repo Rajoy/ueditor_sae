@@ -6,6 +6,7 @@
  */
 
 class UploaderSae {
+    private $_storage;
     private $url;//sae返回的URL
     private $fileField; //文件域名
     private $file; //文件上传对象
@@ -48,6 +49,7 @@ class UploaderSae {
      */
     public function __construct($fileField, $config, $type = "upload")
     {
+        $this->_storage = new SaeStorage();
         $this->fileField = $fileField;
         $this->config = $config;
         $this->type = $type;
@@ -106,12 +108,12 @@ class UploaderSae {
 
 
         //移动文件
-        $storage = new SaeStorage();
+
         $domain = 'ueditor';
         $destFileName = $this->fullName;
         $srcFileName = $file['tmp_name'];
         $attr = array();
-        $url = $storage->upload($domain,$destFileName, $srcFileName, -1, $attr, true);
+        $url = $this->_storage->upload($domain,$destFileName, $srcFileName, -1, $attr, true);
         if($url){
             $this->url = $url;
             $this->stateInfo = $this->stateMap[0];
@@ -144,22 +146,19 @@ class UploaderSae {
             $this->stateInfo = $this->getStateInfo("ERROR_SIZE_EXCEED");
             return;
         }
-
-        //创建目录失败
-        if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
-            $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR");
-            return;
-        } else if (!is_writeable($dirname)) {
-            $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
-            return;
-        }
-
         //移动文件
-        if (!(file_put_contents($this->filePath, $img) && file_exists($this->filePath))) { //移动失败
-            $this->stateInfo = $this->getStateInfo("ERROR_WRITE_CONTENT");
-        } else { //移动成功
+        $domain = 'ueditor';
+        $destFileName = $this->fullName;
+        $attr = array('encoding' => 'gzip','type'=>'image/png');
+        $url = $this->_storage->write($domain,$destFileName, $img, -1, $attr, true);
+        if($url){
+            $this->url = $url;
             $this->stateInfo = $this->stateMap[0];
+        }else{
+            $this->stateInfo = $this->getStateInfo("ERROR_FILE_MOVE");
         }
+
+
 
     }
 
