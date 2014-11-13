@@ -29,13 +29,12 @@ $size = isset($_GET['size']) ? htmlspecialchars($_GET['size']) : $listSize;
 $start = isset($_GET['start']) ? htmlspecialchars($_GET['start']) : 0;
 $end = $start + $size;
 
-/* 获取文件列表 */
-$path = $_SERVER['DOCUMENT_ROOT'] . (substr($path, 0, 1) == "/" ? "":"/") . $path;
 if(!IS_SAE){
+    /* 获取文件列表 */
+    $path = $_SERVER['DOCUMENT_ROOT'] . (substr($path, 0, 1) == "/" ? "":"/") . $path;
     $files = getfiles($path, $allowFiles);
 }else{
     $domain = $CONFIG['domain'];
-    $path = $CONFIG['imageManagerListPath'];
     $files = getSaeFiles($domain,$path, $allowFiles);
 }
 
