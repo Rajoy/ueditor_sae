@@ -8,7 +8,7 @@
  2. 新浪sae:与ueditor配置类似。配置新浪storage的domain到config_sae.json。
 
 **注意**
-config_sae.json配置的ListPath不能以反斜杠`/` 结尾
+config_sae.json配置的ListPath不能以斜杠`/` 结尾
 
 项目coding地址：[ueditor_sae][2]
 项目github地址：[ueditor_sae][3]
